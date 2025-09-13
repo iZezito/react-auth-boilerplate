@@ -11,6 +11,7 @@ interface AuthContextProps {
   loading: boolean;
   error: Error | null;
   user: User | null;
+  isAuthenticated: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(
@@ -58,6 +59,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         loading: isPending,
         error,
         user: usuario || null,
+        isAuthenticated: !!usuario,
       }}
     >
       {children}

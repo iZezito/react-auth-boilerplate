@@ -1,8 +1,8 @@
 import { useCallback, useRef, useState } from "react";
-  
+
 function preventDefault(e: Event) {
   if ( !isTouchEvent(e) ) return;
-  
+
   if (e.touches.length < 2 && e.preventDefault) {
     e.preventDefault();
   }
@@ -29,14 +29,14 @@ export default function useLongPress<T>(
   = {}
 ) {
   const [longPressTriggered, setLongPressTriggered] = useState(false);
-  const timeout = useRef<NodeJS.Timeout>();
-  const target = useRef<EventTarget>();
+  const timeout = useRef<NodeJS.Timeout | null>(null);
+  const target = useRef<EventTarget | null>(null);
 
   const start = useCallback(
     (e: React.MouseEvent<T> | React.TouchEvent<T>) => {
       e.persist();
       const clonedEvent = {...e};
-      
+
       if (shouldPreventDefault && e.target) {
         e.target.addEventListener(
           "touchend",
