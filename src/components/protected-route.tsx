@@ -2,7 +2,6 @@ import { Navigate, Outlet, useNavigate } from "react-router";
 import { useAuth } from "@/contexts/AuthContext";
 import { SidebarInset, SidebarProvider } from "./ui/sidebar";
 import { AppSidebar } from "./app-sidebar";
-import { useEffect } from "react";
 import type { Role } from "@/types";
 
 type ProtectedRouteProps = {
@@ -12,12 +11,6 @@ type ProtectedRouteProps = {
 const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate("/login", { replace: true });
-    }
-  }, [loading, user, navigate]);
 
   if (!loading && !user) {
     navigate("/login", { replace: true });

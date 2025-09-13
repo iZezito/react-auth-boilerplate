@@ -39,7 +39,7 @@ const allRoutes = () => {
   const privateRoutes = [
     {
       path: "/",
-      element: <ProtectedRoute allowedRoles={[Roles.ADMIN]} />,
+      element: <ProtectedRoute allowedRoles={[Roles.DEFAULT]} />,
       children: [
         { index: true, element: <Navigate to="/home" replace /> },
         { path: "profile", element: <Profile /> },
