@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useRouter } from "@tanstack/react-router";
 import {
   type CreateUser,
   type User,
@@ -27,7 +27,7 @@ export const description =
   "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a link to login if you already have an account";
 
 export function SignupForm() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
 
   const form = useForm({
@@ -49,7 +49,7 @@ export function SignupForm() {
         toast.success("Usuário criado com sucesso!", {
           description: `Um email foi enviado para ${data.email} com as instruções para a confirmação da conta`,
         });
-        navigate("/login");
+        router.navigate({ to: "/login" });
       })
       .catch((error) => {
         console.log(error.toString());

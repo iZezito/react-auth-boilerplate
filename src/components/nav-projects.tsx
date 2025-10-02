@@ -22,7 +22,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import { Link } from "react-router"
+import { Link } from "@tanstack/react-router"
 
 export function NavProjects({
   projects,

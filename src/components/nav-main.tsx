@@ -15,7 +15,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import { Link } from "react-router";
+import { Link } from "@tanstack/react-router";
 
 export function NavMain({
   items = [],

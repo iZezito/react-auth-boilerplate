@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sidebar";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useAuth } from "@/contexts/AuthContext";
-import { Link } from "react-router";
+import { Link } from "@tanstack/react-router";
 
 export function NavUser() {
   const { isMobile } = useSidebar();

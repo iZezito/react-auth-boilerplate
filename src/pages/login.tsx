@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -37,7 +37,7 @@ const loginSchema = z.object({
 type LoginData = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { login } = useAuth();
   const [requires2FA, setRequires2FA] = useState(false);
 
@@ -56,7 +56,7 @@ export function LoginForm() {
         if (response.status === 202) {
           setRequires2FA(true);
         } else {
-          navigate("/");
+          router.navigate({ to: "/" });
         }
       })
       .catch((error) => {

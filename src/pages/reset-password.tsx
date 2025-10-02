@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useNavigate } from "react-router";
+import { useRouter } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -38,7 +38,7 @@ type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 export default function ResetPasswordForm() {
   const [token] = useQueryState("token", { defaultValue: "vazio" });
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const form = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
@@ -58,7 +58,7 @@ export default function ResetPasswordForm() {
         toast.success("Senha alterada com sucesso!", {
           description: "Você pode agora fazer login com sua nova senha",
         });
-        navigate("/login");
+        router.navigate({ to: "/login" });
       })
       .catch((error) => {
         toast.error("Erro ao resetar a senha", {

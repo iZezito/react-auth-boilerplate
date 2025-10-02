@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useRouter } from "@tanstack/react-router";
 import {
   Card,
   CardContent,
@@ -18,7 +18,7 @@ export default function EmailValidation() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [token] = useQueryState("token", { defaultValue: "vazio" });
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     const validateEmail = async () => {
@@ -48,7 +48,7 @@ export default function EmailValidation() {
   }, [token]);
 
   const handleReturn = () => {
-    navigate("/");
+    router.navigate({ to: "/" });
   };
 
   if (isLoading) {

@@ -5,7 +5,7 @@ import type { AxiosResponse } from "axios";
 import { useService } from "@/hooks/use-service";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-interface AuthContextProps {
+export interface AuthContextProps {
   login: (login: LoginData) => Promise<AxiosResponse<AuthResponse>>;
   logout: () => void;
   loading: boolean;
