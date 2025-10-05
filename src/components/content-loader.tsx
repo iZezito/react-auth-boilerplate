@@ -1,5 +1,7 @@
 import React from "react";
 import { Loader } from "./ui/loader";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "./ui/empty";
+import { XCircle } from "lucide-react";
 
 interface Props {
   loading: boolean;
@@ -43,7 +45,19 @@ const ContentLoader: React.FC<Props> = ({
   }
 
   if (!children) {
-    return <div className="text-center">{noContent}</div>;
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <XCircle className="h-16 w-16 text-red-500" />
+          </EmptyMedia>
+          <EmptyTitle>Nenhum dado encontrado!</EmptyTitle>
+          <EmptyDescription>
+          {noContent}
+        </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
   }
 
   return <>{children}</>;
