@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { useNavigate } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,18 +21,9 @@ import {
 import api from "@/services/api";
 import { toast } from "sonner";
 import { useQueryState } from "nuqs";
+import { resetPasswordSchema, type ResetPasswordValues } from "@/types";
 
-const resetPasswordSchema = z
-  .object({
-    newPassword: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "As senhas não coincidem",
-    path: ["confirmPassword"],
-  });
 
-type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 export default function ResetPasswordForm() {
   const [token] = useQueryState("token", { defaultValue: "vazio" });

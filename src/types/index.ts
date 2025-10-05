@@ -1,13 +1,30 @@
 import { z } from "zod";
-import api from "@/services/api";
 
 export const loginSchema = z.object({
-  email: z.string().email("Email inválido"),
+  email: z.email("Email inválido"),
   password: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
-  code: z.string().min(6, "o código deve possuir 6 dígitos").optional(),
+  codeOTP: z.string().min(6, "o código deve possuir 6 dígitos").optional(),
 });
 
 export type LoginData = z.infer<typeof loginSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.email("Por favor, insira um email válido."),
+});
+
+export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
+
+export const resetPasswordSchema = z
+  .object({
+    newPassword: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"],
+  });
+
+export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
 export const userSchema = z
   .object({
@@ -25,26 +42,6 @@ export const userSchema = z
       path: ["repetirSenha"],
     }
   )
-  .superRefine(async (data, ctx) => {
-    try {
-      const response = await api.get(`/users/email/${data.email}`);
-      const isDisponible = await response.data;
-
-      if (!isDisponible) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "Este email já está em uso",
-          path: ["email"],
-        });
-      }
-    } catch (error) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Erro ao verificar disponibilidade do email",
-        path: ["email"],
-      });
-    }
-  });
 
 export const userUpdateSchema = z.object({
   name: z.string().min(1, "O nome deve ter no mínimo 1 caractere"),
@@ -67,6 +64,12 @@ export type University = {
 };
 
 export type CreateUser = z.infer<typeof userSchema>;
+
+export type ApiError = {
+  message: string;
+  code: number;
+  timestamp: string;
+};
 
 export const Roles = {
   ADMIN: "ADMIN",

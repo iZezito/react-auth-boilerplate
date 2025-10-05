@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,13 +27,8 @@ import {
 } from "@/components/ui/input-otp";
 
 import { useAuth } from "@/contexts/AuthContext";
-const loginSchema = z.object({
-  email: z.string().email("E-mail inválido"),
-  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
-  codeOTP: z.string().optional(),
-});
-
-type LoginData = z.infer<typeof loginSchema>;
+import { loginSchema, type LoginData, type ApiError } from "@/types";
+import { AxiosError } from "axios";
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -60,7 +54,6 @@ export function LoginForm() {
         }
       })
       .catch((error) => {
-        console.error(error);
         form.setError("root", {
           type: "manual",
           message: error?.response?.data.message || "Erro ao efetuar login",

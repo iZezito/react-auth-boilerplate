@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import {
+  type ApiError,
   type CreateUser,
   type User,
   userSchema,
@@ -21,6 +22,7 @@ import {
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import type { AxiosError } from "axios";
 
 
 export const description =
@@ -51,8 +53,15 @@ export function SignupForm() {
         });
         navigate("/login");
       })
-      .catch((error) => {
-        console.log(error.toString());
+      .catch((error: AxiosError<ApiError>) => {
+        if (error?.response?.status === 409) {
+          form.setError("email", {
+            type: "manual",
+            message: "Email já em uso",
+          });
+          return;
+        }
+
       });
   };
 

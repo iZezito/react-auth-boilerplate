@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -20,12 +19,7 @@ import {
 } from "@/components/ui/form";
 import api from "@/services/api";
 import { toast } from "sonner";
-
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Por favor, insira um email válido."),
-});
-
-type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
+import { forgotPasswordSchema, type ForgotPasswordValues } from "@/types";
 
 export default function ForgotPasswordForm() {
   const form = useForm<ForgotPasswordValues>({
