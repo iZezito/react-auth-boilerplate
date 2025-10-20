@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router";
 import {
-  type ApiError,
   type CreateUser,
   type User,
   userSchema,
@@ -22,17 +21,13 @@ import {
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { AxiosError } from "axios";
 
-
-export const description =
-  "A sign up form with first name, last name, email and password inside a card. There's an option to sign up with GitHub and a link to login if you already have an account";
 
 export function SignupForm() {
   const navigate = useNavigate();
 
 
-  const form = useForm({
+  const form = useForm<CreateUser>({
     resolver: zodResolver(userSchema),
     defaultValues: {
       name: "",
@@ -53,15 +48,13 @@ export function SignupForm() {
         });
         navigate("/login");
       })
-      .catch((error: AxiosError<ApiError>) => {
-        if (error?.response?.status === 409) {
-          form.setError("email", {
+      .catch((error) => {
+
+          form.setError("root", {
             type: "manual",
-            message: "Email já em uso",
+            message: error?.response?.data.message || "Erro ao criar usuário",
           });
           return;
-        }
-
       });
   };
 

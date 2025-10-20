@@ -3,7 +3,7 @@ import { z } from "zod";
 export const loginSchema = z.object({
   email: z.email("Email inválido"),
   password: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
-  codeOTP: z.string().min(6, "o código deve possuir 6 dígitos").optional(),
+  codeOTP: z.string().optional(),
 });
 
 export type LoginData = z.infer<typeof loginSchema>;
@@ -40,8 +40,8 @@ export const userSchema = z
     {
       message: "Deve ser igual ao campo senha",
       path: ["repetirSenha"],
-    }
-  )
+    },
+  );
 
 export const userUpdateSchema = z.object({
   name: z.string().min(1, "O nome deve ter no mínimo 1 caractere"),
@@ -76,7 +76,7 @@ export const Roles = {
   DEFAULT: "DEFAULT",
 } as const;
 
-export type Role = typeof Roles[keyof typeof Roles];
+export type Role = (typeof Roles)[keyof typeof Roles];
 
 export type User = {
   id: string;
@@ -86,8 +86,6 @@ export type User = {
   role: Role;
   password: string;
 };
-
-
 
 export type Usuario = {
   id: number;

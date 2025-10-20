@@ -27,8 +27,7 @@ import {
 } from "@/components/ui/input-otp";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { loginSchema, type LoginData, type ApiError } from "@/types";
-import { AxiosError } from "axios";
+import { loginSchema, type LoginData } from "@/types";
 
 export function LoginForm() {
   const navigate = useNavigate();
