@@ -9,7 +9,7 @@ export const loginSchema = z.object({
 export type LoginData = z.infer<typeof loginSchema>;
 
 export const forgotPasswordSchema = z.object({
-  email: z.email("Por favor, insira um email válido."), 
+  email: z.email("Por favor, insira um email válido."),
 });
 
 export type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
@@ -85,6 +85,7 @@ export type User = {
   twoFactorAuthenticationEnabled: boolean;
   role: Role;
   password: string;
+  subscription: Subscription;
 };
 
 export type Usuario = {
@@ -119,3 +120,54 @@ export type ResponseType<T> = {
   first: boolean;
   numberOfElements: number;
 };
+
+
+export type Subscription = {
+  id: number;
+  userId: string;
+  plan: Plan;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt: string;
+};
+
+
+export const plans = {
+  FREE: {
+    ordem: 1,
+    limiteRecursos: 3,
+    preco: 0,
+    descricao: "Plano gratuito - até 3 recursos",
+  },
+  BASIC: {
+    ordem: 2,
+    limiteRecursos: 100,
+    preco: 1990,
+    descricao: "Plano Pro - até 100 recursos",
+  },
+  PRO: {
+    ordem: 3,
+    limiteRecursos: Number.MAX_SAFE_INTEGER,
+    preco: 4990,
+    descricao: "Plano Premium - recursos ilimitados",
+  },
+} as const;
+
+export type Plan = (typeof plans)[keyof typeof plans];
+
+export type Post = {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+}
+
+export const postSchema = z.object({
+  title: z.string().min(1, "O título deve ter no mínimo 1 caractere"),
+  content: z.string().min(1, "O conteúdo deve ter no mínimo 1 caractere"),
+});
+
+export type PostValues = z.infer<typeof postSchema>;

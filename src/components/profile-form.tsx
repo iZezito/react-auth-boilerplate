@@ -3,6 +3,7 @@ import {
   type UpdateUser,
   type User,
   userUpdateSchema,
+  plans,
 } from "@/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { Fragment } from "react";
@@ -21,6 +22,12 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UpgradePlanDialog } from "@/components/upgrade-plan-dialog";
+import { UsageTab } from "@/components/usage-tab";
+import { Sparkles, Zap, Crown } from "lucide-react";
 
 type ProfileFormProps = {
   user: User;
@@ -56,6 +63,26 @@ export function ProfileForm({ user, onSuccess }: ProfileFormProps) {
     }
   };
 
+  const getPlanKey = () => {
+    const planEntry = Object.entries(plans).find(
+      ([, planInfo]) =>
+        planInfo.ordem === user.subscription.plan.ordem &&
+        planInfo.preco === user.subscription.plan.preco
+    );
+    return (planEntry?.[0] as keyof typeof plans) || "FREE";
+  };
+
+  const planKey = getPlanKey();
+  const planInfo = plans[planKey];
+
+  const planIcons = {
+    FREE: Sparkles,
+    BASIC: Zap,
+    PRO: Crown,
+  };
+
+  const PlanIcon = planIcons[planKey];
+
   return (
     <Fragment>
       <Form {...form}>
@@ -71,6 +98,82 @@ export function ProfileForm({ user, onSuccess }: ProfileFormProps) {
               Preencha os campos abaixo para atualizar seus dados.
             </p>
           </div>
+
+          <Tabs defaultValue="plan" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="plan">Plano & Assinatura</TabsTrigger>
+              <TabsTrigger value="usage">Uso de Recursos</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="plan" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <PlanIcon className="w-6 h-6" />
+                    Plano Atual
+                  </CardTitle>
+                  <CardDescription>
+                    Gerencie sua assinatura e recursos disponíveis
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-2xl font-bold">{planKey}</h3>
+                        <Badge variant={user.subscription.isActive ? "default" : "destructive"}>
+                          {user.subscription.isActive ? "Ativo" : "Inativo"}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {planInfo.descricao}
+                      </p>
+                      <p className="text-lg font-semibold mt-2">
+                        R$ {(planInfo.preco / 100).toFixed(2)}/mês
+                      </p>
+                    </div>
+                    <UpgradePlanDialog currentPlanKey={planKey}>
+                      <Button size="lg" variant="outline">
+                        Fazer Upgrade
+                      </Button>
+                    </UpgradePlanDialog>
+                  </div>
+
+                  <div className="border-t pt-4 mt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <p className="text-muted-foreground">Recursos disponíveis</p>
+                        <p className="font-semibold">
+                          {planInfo.limiteRecursos === Number.MAX_SAFE_INTEGER
+                            ? "Ilimitados"
+                            : planInfo.limiteRecursos}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Data de renovação</p>
+                        <p className="font-semibold">
+                          {new Date(user.subscription.expiresAt).toLocaleDateString("pt-BR")}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Membro desde</p>
+                        <p className="font-semibold">
+                          {new Date(user.subscription.createdAt).toLocaleDateString("pt-BR")}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="usage" className="mt-6">
+              <UsageTab
+                planKey={planKey}
+                subscriptionStartDate={user.subscription.updatedAt}
+              />
+            </TabsContent>
+          </Tabs>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <FormField

@@ -7,6 +7,7 @@ import {
   Map,
   PieChart,
   Home,
+  FileText,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -49,6 +50,11 @@ const data = {
       title: "Home",
       url: "/home",
       icon: Home,
+    },
+    {
+      title: "Posts",
+      url: "/posts",
+      icon: FileText,
     },
     // {
     //   title: "Tickets",

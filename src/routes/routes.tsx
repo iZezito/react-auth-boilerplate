@@ -10,6 +10,7 @@ import ResetPasswordForm from "@/pages/reset-password";
 import EmailValidation from "@/pages/validate-email";
 import Home from "@/pages/home";
 import { Roles } from "@/types";
+import PostsPage from "@/pages/posts";
 
 const allRoutes = () => {
   const publicRoutes = [
@@ -43,6 +44,7 @@ const allRoutes = () => {
       children: [
         { index: true, element: <Navigate to="/home" replace /> },
         { path: "profile", element: <Profile /> },
+        { path: "posts", element: <PostsPage /> },
       ],
     },
   ];
