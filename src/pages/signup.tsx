@@ -1,9 +1,5 @@
 import { useNavigate } from "react-router";
-import {
-  type CreateUser,
-  type User,
-  userSchema,
-} from "@/types";
+import { type CreateUser, type User, userSchema } from "@/types";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,10 +18,8 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-
 export function SignupForm() {
   const navigate = useNavigate();
-
 
   const form = useForm<CreateUser>({
     resolver: zodResolver(userSchema),
@@ -40,7 +34,6 @@ export function SignupForm() {
   const { create } = useService<User>("users");
 
   const onSubmit = async (data: CreateUser) => {
-
     await create(data)
       .then(() => {
         toast.success("Usuário criado com sucesso!", {
@@ -49,12 +42,11 @@ export function SignupForm() {
         navigate("/login");
       })
       .catch((error) => {
-
-          form.setError("root", {
-            type: "manual",
-            message: error?.response?.data.message || "Erro ao criar usuário",
-          });
-          return;
+        form.setError("root", {
+          type: "manual",
+          message: error?.response?.data.message || "Erro ao criar usuário",
+        });
+        return;
       });
   };
 
@@ -108,39 +100,39 @@ export function SignupForm() {
             />
           </div>
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="******" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Senha</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="******" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            <FormField
-              control={form.control}
-              name="repetirSenha"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Repetir Senha</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="******"
-                      required
-                      {...field}
-                      disabled={form.formState.isSubmitting}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={form.control}
+            name="repetirSenha"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Repetir Senha</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="******"
+                    required
+                    {...field}
+                    disabled={form.formState.isSubmitting}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <div className="flex justify-end">
             <Button type="submit">
