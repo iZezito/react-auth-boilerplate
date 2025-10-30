@@ -96,7 +96,7 @@ export function UpgradePlanDialog({
           </DialogTitle>
           <DialogDescription className="text-base">
             Você está atualmente no plano {currentPlanKey}. Faça upgrade ou
-            inicie um novo plano para limites de crédito mensais.
+            inicie um novo plano para limites de uso mensal.
           </DialogDescription>
         </DialogHeader>
 

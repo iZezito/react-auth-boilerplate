@@ -102,6 +102,7 @@ export function PixPaymentModal() {
                 Pagamento PIX
               </DialogTitle>
               <DialogDescription>Escaneie o QR Code ou copie o código para pagar</DialogDescription>
+              <DialogDescription>Você está realizando uma compra de 1 mês de uso do plano {payment.plan}</DialogDescription>
             </DialogHeader>
 
             <div className="space-y-4 py-4">
