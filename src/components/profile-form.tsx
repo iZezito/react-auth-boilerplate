@@ -27,6 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UpgradePlanDialog } from "@/components/upgrade-plan-dialog";
 import { UsageTab } from "@/components/usage-tab";
+import { PixPaymentModal } from "@/components/payment-dialog";
 import { Sparkles, Zap, Crown } from "lucide-react";
 import { startOfMonth } from "date-fns";
 
@@ -77,6 +78,7 @@ export function ProfileForm({ user, onSuccess }: ProfileFormProps) {
 
   return (
     <Fragment>
+      <PixPaymentModal />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

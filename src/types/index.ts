@@ -171,3 +171,23 @@ export const postSchema = z.object({
 });
 
 export type PostValues = z.infer<typeof postSchema>;
+
+
+export type Payment = {
+  id: string;
+  userId: string;
+  method: PaymentMethod;
+  plan: PlanKey;
+  amountCents: number;
+  qrCodeText: string;
+  qrCodeImage: string;
+  status: PaymentStatus;
+  externalId: string;
+  paidAt: string | null;
+  expiresAt: string;
+  createdAt: string;
+};
+
+export type PaymentMethod = "PIX" | "CREDIT_CARD";
+
+export type PaymentStatus = "PENDING" | "CONFIRMED" | "FAILED" | "EXPIRED";

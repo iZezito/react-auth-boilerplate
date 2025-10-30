@@ -10,7 +10,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check } from "lucide-react";
-import { plans, type PlanKey } from "@/types";
+import { plans, type Payment, type PlanKey } from "@/types";
+import { parseAsBoolean, useQueryState } from "nuqs";
+import api from "@/services/api";
+import { toast } from "sonner";
 
 type UpgradePlanDialogProps = {
   currentPlanKey: PlanKey;
@@ -49,14 +52,27 @@ export function UpgradePlanDialog({
   const [selectedTab, setSelectedTab] = useState<PlanKey>(
     currentPlanKey === "FREE" ? "BASIC" : currentPlanKey
   );
+  const [showPayment, setShowPayment] = useQueryState("showPayment", parseAsBoolean.withDefault(false))
+  const [, setPaymentId] = useQueryState("paymentId", {defaultValue: ""})
+
 
   const handleUpgrade = async (planKey: PlanKey) => {
-    console.log("Upgrading to:", planKey);
-    setOpen(false);
+      api.post<Payment>(`/payments`, {plan: planKey})
+      .then((res) => {
+        setPaymentId(res.data.id);
+        setShowPayment(true)
+        setOpen(false)
+      })
+      .catch((err) => {
+        toast.error("Erro ao criar pagamento", {
+          description: err.response?.data.message || "Erro ao criar pagamento",
+          duration: 5000,
+        })
+      })
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open && !showPayment} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children || <Button>Fazer Upgrade</Button>}
       </DialogTrigger>
