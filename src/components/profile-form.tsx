@@ -29,7 +29,7 @@ import { UpgradePlanDialog } from "@/components/upgrade-plan-dialog";
 import { UsageTab } from "@/components/usage-tab";
 import { PixPaymentModal } from "@/components/payment-dialog";
 import { Sparkles, Zap, Crown } from "lucide-react";
-import { isAfter, startOfMonth } from "date-fns";
+import { addMonths, isAfter, startOfMonth } from "date-fns";
 
 type ProfileFormProps = {
   user: User;
@@ -116,7 +116,7 @@ export function ProfileForm({ user, onSuccess }: ProfileFormProps) {
                       <div className="flex items-center gap-2">
                         <h3 className="text-2xl font-bold">{planKey}</h3>
                         <Badge variant={user.subscription.isActive ? "default" : "destructive"}>
-                          {user.subscription.isActive && isAfter(new Date(user.subscription.expiresAt), new Date()) ? "Ativo" : "Expirado"}
+                          {user.subscription.isActive && user.subscription.expiresAt && isAfter(new Date(user.subscription.expiresAt), new Date()) ? "Ativo" : "Expirado"}
                         </Badge>
                       </div>
                       <p className="text-sm text-muted-foreground">
@@ -146,7 +146,7 @@ export function ProfileForm({ user, onSuccess }: ProfileFormProps) {
                       <div>
                         <p className="text-muted-foreground">Data de renovação</p>
                         <p className="font-semibold">
-                          {new Date(user.subscription.expiresAt).toLocaleDateString("pt-BR")}
+                          { user.subscription.expiresAt ? new Date(user.subscription.expiresAt).toLocaleDateString("pt-BR"): startOfMonth(addMonths(new Date(), 1)).toLocaleDateString("pt-BR")}
                         </p>
                       </div>
                       <div>

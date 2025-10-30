@@ -129,7 +129,7 @@ export type Subscription = {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  expiresAt: string;
+  expiresAt: string | null;
 };
 
 
