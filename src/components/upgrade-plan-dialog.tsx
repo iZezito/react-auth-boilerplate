@@ -10,11 +10,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Check } from "lucide-react";
-import { plans } from "@/types";
-import { cn } from "@/lib/utils";
+import { plans, type PlanKey } from "@/types";
 
 type UpgradePlanDialogProps = {
-  currentPlanKey: keyof typeof plans;
+  currentPlanKey: PlanKey;
   children?: React.ReactNode;
 };
 
@@ -47,16 +46,14 @@ export function UpgradePlanDialog({
   children,
 }: UpgradePlanDialogProps) {
   const [open, setOpen] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<keyof typeof plans>(
+  const [selectedTab, setSelectedTab] = useState<PlanKey>(
     currentPlanKey === "FREE" ? "BASIC" : currentPlanKey
   );
 
-  const handleUpgrade = async (planKey: keyof typeof plans) => {
+  const handleUpgrade = async (planKey: PlanKey) => {
     console.log("Upgrading to:", planKey);
     setOpen(false);
   };
-
-  const currentPlan = plans[currentPlanKey];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -76,7 +73,7 @@ export function UpgradePlanDialog({
 
         <Tabs
           value={selectedTab}
-          onValueChange={(value) => setSelectedTab(value as keyof typeof plans)}
+          onValueChange={(value) => setSelectedTab(value as PlanKey)}
           className="w-full"
         >
           <TabsList className="grid w-full grid-cols-3 bg-muted/50">

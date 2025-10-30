@@ -125,13 +125,15 @@ export type ResponseType<T> = {
 export type Subscription = {
   id: number;
   userId: string;
-  plan: Plan;
+  plan: PlanKey;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
   expiresAt: string;
 };
 
+
+export type PlanKey = "FREE" | "BASIC" | "PRO";
 
 export const plans = {
   FREE: {
@@ -152,9 +154,7 @@ export const plans = {
     preco: 4990,
     descricao: "Plano Premium - recursos ilimitados",
   },
-} as const;
-
-export type Plan = (typeof plans)[keyof typeof plans];
+} as const
 
 export type Post = {
   id: string;

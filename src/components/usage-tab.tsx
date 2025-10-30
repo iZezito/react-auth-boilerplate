@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "@/services/api";
-import { plans } from "@/types";
+import { plans, type PlanKey } from "@/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -8,11 +8,12 @@ import { AlertCircle, CheckCircle2, TrendingUp } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 type UsageTabProps = {
-  planKey: keyof typeof plans;
+  planKey: PlanKey;
   subscriptionStartDate: string;
 };
 
 export function UsageTab({ planKey, subscriptionStartDate }: UsageTabProps) {
+  console.log("subscriptionStartDate", subscriptionStartDate);
   const planInfo = plans[planKey];
   const limit = planInfo.limiteRecursos;
   const isUnlimited = limit === Number.MAX_SAFE_INTEGER;

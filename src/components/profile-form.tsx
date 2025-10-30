@@ -28,6 +28,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UpgradePlanDialog } from "@/components/upgrade-plan-dialog";
 import { UsageTab } from "@/components/usage-tab";
 import { Sparkles, Zap, Crown } from "lucide-react";
+import { startOfMonth } from "date-fns";
 
 type ProfileFormProps = {
   user: User;
@@ -63,16 +64,7 @@ export function ProfileForm({ user, onSuccess }: ProfileFormProps) {
     }
   };
 
-  const getPlanKey = () => {
-    const planEntry = Object.entries(plans).find(
-      ([, planInfo]) =>
-        planInfo.ordem === user.subscription.plan.ordem &&
-        planInfo.preco === user.subscription.plan.preco
-    );
-    return (planEntry?.[0] as keyof typeof plans) || "FREE";
-  };
-
-  const planKey = getPlanKey();
+  const planKey = user.subscription.plan;
   const planInfo = plans[planKey];
 
   const planIcons = {
@@ -170,7 +162,7 @@ export function ProfileForm({ user, onSuccess }: ProfileFormProps) {
             <TabsContent value="usage" className="mt-6">
               <UsageTab
                 planKey={planKey}
-                subscriptionStartDate={user.subscription.updatedAt}
+                subscriptionStartDate={planKey === "FREE" ? startOfMonth(new Date()).toISOString() : user.subscription.updatedAt}
               />
             </TabsContent>
           </Tabs>
