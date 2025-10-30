@@ -14,6 +14,7 @@ import { plans, type Payment, type PlanKey } from "@/types";
 import { parseAsBoolean, useQueryState } from "nuqs";
 import api from "@/services/api";
 import { toast } from "sonner";
+import { Spinner } from "./ui/spinner";
 
 type UpgradePlanDialogProps = {
   currentPlanKey: PlanKey;
@@ -52,11 +53,13 @@ export function UpgradePlanDialog({
   const [selectedTab, setSelectedTab] = useState<PlanKey>(
     currentPlanKey === "FREE" ? "BASIC" : currentPlanKey
   );
+  const [loading, setLoading] = useState(false)
   const [showPayment, setShowPayment] = useQueryState("showPayment", parseAsBoolean.withDefault(false))
   const [, setPaymentId] = useQueryState("paymentId", {defaultValue: ""})
 
 
   const handleUpgrade = async (planKey: PlanKey) => {
+      setLoading(true)
       api.post<Payment>(`/payments`, {plan: planKey})
       .then((res) => {
         setPaymentId(res.data.id);
@@ -69,6 +72,9 @@ export function UpgradePlanDialog({
           duration: 5000,
         })
       })
+      .finally(() => {
+        setLoading(false)
+      })
   };
 
   return (
@@ -77,6 +83,13 @@ export function UpgradePlanDialog({
         {children || <Button>Fazer Upgrade</Button>}
       </DialogTrigger>
       <DialogContent className="max-w-xl">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center gap-2 py-8">
+            <Spinner className="w-8 h-8 animate-spin" />
+            <p className="text-sm text-muted-foreground">Gerando pagamento...</p>
+          </div>
+        ) : (
+          <>
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
             Explore Mais Planos
@@ -200,8 +213,10 @@ export function UpgradePlanDialog({
               página de preços
             </a>
             .
-          </p>
-        </div>
+              </p>
+            </div>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
