@@ -140,19 +140,19 @@ export const plans = {
     ordem: 1,
     limiteRecursos: 3,
     preco: 0,
-    descricao: "Plano gratuito - até 3 recursos",
+    descricao: "Plano gratuito - até 3 recursos mensais",
   },
   BASIC: {
     ordem: 2,
     limiteRecursos: 100,
     preco: 1990,
-    descricao: "Plano Pro - até 100 recursos",
+    descricao: "Plano Básico - até 100 recursos mensais",
   },
   PRO: {
     ordem: 3,
     limiteRecursos: Number.MAX_SAFE_INTEGER,
     preco: 4990,
-    descricao: "Plano Premium - recursos ilimitados",
+    descricao: "Plano Pro - recursos ilimitados",
   },
 } as const
 
